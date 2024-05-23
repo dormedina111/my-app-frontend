@@ -35,6 +35,7 @@ function CodeBlockPage({ codeBlocks }) {
 
         // Event handler for receiving code updates
         socket.on('updateCode', (newCode) => {
+            if(newCode === null) return;
             setCode(newCode);
         });
 
