@@ -2,14 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Lobby.css';
 
-function Lobby() {
-    const codeBlocks = [
-        { id: 1, title: "Reversing a String" },
-        { id: 2, title: "Checking for Palindrome" },
-        { id: 3, title: "Summing Elements in an Array" },
-        { id: 4, title: "Counting Occurrences in an Array" }
-    ];
-
+function Lobby({ codeBlocks }) {
     return (
         <div className="lobby-container">
             <h1>Choose code block</h1>
