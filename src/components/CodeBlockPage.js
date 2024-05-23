@@ -7,7 +7,7 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 
 const socket = io.connect("http://localhost:5000");
 
-function CodeBlockPage() {
+function CodeBlockPage({ codeBlocks }) {
     const { id } = useParams();
     const [codeBlock, setCodeBlock] = useState(null);
     const [code, setCode] = useState('');
@@ -17,15 +17,14 @@ function CodeBlockPage() {
 
     useEffect(() => {
         socket.emit('joinRoom', id);
-
-        // Fetch the code block from the server
-        fetch(`http://localhost:5000/api/code-blocks/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                setCodeBlock(data);
-                setCode(data.code);
-            })
-            .catch(error => console.error('Error fetching code block:', error));
+        const currentCodeBlock = codeBlocks.find(block => block.id === parseInt(id, 10));
+        // console.log(currentCodeBlock)
+        // console.log(currentCodeBlock.code)
+        // console.log(typeof(currentCodeBlock.code))
+        if (currentCodeBlock) {
+            setCodeBlock(currentCodeBlock);
+            setCode(currentCodeBlock.code);
+        }
 
 
         // Event handler for role assignment
@@ -50,7 +49,7 @@ function CodeBlockPage() {
             socket.off('codeSolved');
             socket.emit('leaveRoom', id);
         };
-    }, [id]);
+    }, [id, codeBlocks]);
 
     // Event handler for textarea value change
     const handleCodeChange = (newCode) => {
